@@ -47,9 +47,6 @@
 #endregion Header Comments
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using QuickLink2DotNet;
 
 namespace QuickStart

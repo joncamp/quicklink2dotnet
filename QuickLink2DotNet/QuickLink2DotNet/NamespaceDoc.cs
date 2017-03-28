@@ -40,10 +40,7 @@
 
 #endregion Header Comments
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Runtime.CompilerServices;
 
 namespace QuickLink2DotNet
 {
@@ -251,6 +248,6 @@ namespace QuickLink2DotNet
     /// </list>
     /// </para>
     /// </summary>
-    [System.Runtime.CompilerServices.CompilerGenerated]
+    [CompilerGenerated]
     class NamespaceDoc { }
 }

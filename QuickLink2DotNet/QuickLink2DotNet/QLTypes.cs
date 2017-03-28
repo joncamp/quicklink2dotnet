@@ -981,7 +981,7 @@ namespace QuickLink2DotNet
         /// calibration container.
         /// </para>
         /// </summary>
-        public System.Int32 targetId;
+        public Int32 targetId;
 
         /// <summary>
         /// <para>
@@ -989,7 +989,7 @@ namespace QuickLink2DotNet
         /// calibrated (0.-100.)
         /// </para>
         /// </summary>
-        public System.Single x;
+        public Single x;
 
         /// <summary>
         /// <para>
@@ -997,7 +997,7 @@ namespace QuickLink2DotNet
         /// (0.- 100.)
         /// </para>
         /// </summary>
-        public System.Single y;
+        public Single y;
     }
 
     /// <summary>
@@ -1016,7 +1016,7 @@ namespace QuickLink2DotNet
         /// are to the right.
         /// </para>
         /// </summary>
-        public System.Single x;
+        public Single x;
 
         /// <summary>
         /// <para>
@@ -1025,7 +1025,7 @@ namespace QuickLink2DotNet
         /// below.
         /// </para>
         /// </summary>
-        public System.Single y;
+        public Single y;
 
         /// <summary>
         /// <para>
@@ -1033,7 +1033,7 @@ namespace QuickLink2DotNet
         /// This can be used to identify which target has the worst calibration.
         /// </para>
         /// </summary>
-        public System.Single score;
+        public Single score;
     }
 
     /// <summary>
@@ -1050,14 +1050,14 @@ namespace QuickLink2DotNet
         /// The actual sensor width in pixels.
         /// </para>
         /// </summary>
-        public System.Int32 sensorWidth;
+        public Int32 sensorWidth;
 
         /// <summary>
         /// <para>
         /// The actual sensor height in pixels.
         /// </para>
         /// </summary>
-        public System.Int32 sensorHeight;
+        public Int32 sensorHeight;
 
         /// <summary>
         /// <para>
@@ -1065,7 +1065,7 @@ namespace QuickLink2DotNet
         /// </para>
         /// </summary>
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
-        public System.String serialNumber;
+        public String serialNumber;
 
         /// <summary>
         /// <para>
@@ -1073,7 +1073,7 @@ namespace QuickLink2DotNet
         /// </para>
         /// </summary>
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
-        public System.String modelName;
+        public String modelName;
     }
 
     /// <summary>
@@ -1089,14 +1089,14 @@ namespace QuickLink2DotNet
         /// An x-coordinate of type double.
         /// </para>
         /// </summary>
-        public System.Double x;
+        public Double x;
 
         /// <summary>
         /// <para>
         /// A y-coordinate of type double.
         /// </para>
         /// </summary>
-        public System.Double y;
+        public Double y;
     }
 
     /// <summary>
@@ -1112,14 +1112,14 @@ namespace QuickLink2DotNet
         /// An x-coordinate of type float.
         /// </para>
         /// </summary>
-        public System.Single x;
+        public Single x;
 
         /// <summary>
         /// <para>
         /// A y-coordinate of type float.
         /// </para>
         /// </summary>
-        public System.Single y;
+        public Single y;
     }
 
     /// <summary>
@@ -1135,28 +1135,28 @@ namespace QuickLink2DotNet
         /// The x coordinate of the upper left corner of the rectangle.
         /// </para>
         /// </summary>
-        public System.Int32 x;
+        public Int32 x;
 
         /// <summary>
         /// <para>
         /// The y coordinate of the upper left corner of the rectangle.
         /// </para>
         /// </summary>
-        public System.Int32 y;
+        public Int32 y;
 
         /// <summary>
         /// <para>
         /// The width of the rectangle.
         /// </para>
         /// </summary>
-        public System.Int32 width;
+        public Int32 width;
 
         /// <summary>
         /// <para>
         /// The height of the rectangle.
         /// </para>
         /// </summary>
-        public System.Int32 height;
+        public Int32 height;
     }
 
     /// <summary>
@@ -1181,7 +1181,7 @@ namespace QuickLink2DotNet
         /// if binning is turned on.
         /// </para>
         /// </summary>
-        public System.Int32 Width;
+        public Int32 Width;
 
         /// <summary>
         /// <para>
@@ -1189,7 +1189,7 @@ namespace QuickLink2DotNet
         /// if binning is turned on.
         /// </para>
         /// </summary>
-        public System.Int32 Height;
+        public Int32 Height;
 
         /// <summary>
         /// <para>
@@ -1197,14 +1197,14 @@ namespace QuickLink2DotNet
         /// started.
         /// </para>
         /// </summary>
-        public System.Double Timestamp;
+        public Double Timestamp;
 
         /// <summary>
         /// <para>
         /// The gain value of the image.
         /// </para>
         /// </summary>
-        public System.Int32 Gain;
+        public Int32 Gain;
 
         /// <summary>
         /// <para>
@@ -1212,7 +1212,7 @@ namespace QuickLink2DotNet
         /// determine if a frame was lost.
         /// </para>
         /// </summary>
-        public System.Int32 FrameNumber;
+        public Int32 FrameNumber;
 
         /// <summary>
         /// <para>
@@ -1247,7 +1247,7 @@ namespace QuickLink2DotNet
         /// </summary>
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 48)]
 #endif
-        public System.String Reserved;
+        public String Reserved;
     }
 
     /// <summary>
@@ -1266,7 +1266,7 @@ namespace QuickLink2DotNet
         /// </para>
         /// </summary>
         [MarshalAs(UnmanagedType.U1)]
-        public System.Boolean Found;
+        public Boolean Found;
 
         /// <summary>
         /// <para>
@@ -1275,7 +1275,7 @@ namespace QuickLink2DotNet
         /// </para>
         /// </summary>
         [MarshalAs(UnmanagedType.U1)]
-        public System.Boolean Calibrated;
+        public Boolean Calibrated;
 
         /// <summary>
         /// <para>
@@ -1284,7 +1284,7 @@ namespace QuickLink2DotNet
         /// determined and it's value should not be used for that frame.
         /// </para>
         /// </summary>
-        public System.Single PupilDiameter;
+        public Single PupilDiameter;
 
         /// <summary>
         /// <para>
@@ -1334,7 +1334,7 @@ namespace QuickLink2DotNet
 
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 64)]
 #endif
-        public System.String Reserved;
+        public String Reserved;
     }
 
     /// <summary>
@@ -1353,35 +1353,35 @@ namespace QuickLink2DotNet
         /// </para>
         /// </summary>
         [MarshalAs(UnmanagedType.U1)]
-        public System.Boolean Valid;
+        public Boolean Valid;
 
         /// <summary>
         /// <para>
         /// The x position of the gaze point in percentage of the calibrated area.
         /// </para>
         /// </summary>
-        public System.Single x;
+        public Single x;
 
         /// <summary>
         /// <para>
         /// The y position of the gaze point in percentage of the calibrated area.
         /// </para>
         /// </summary>
-        public System.Single y;
+        public Single y;
 
         /// <summary>
         /// <para>
         /// The amount the left eye affected the weighted gaze point.
         /// </para>
         /// </summary>
-        public System.Single LeftWeight;
+        public Single LeftWeight;
 
         /// <summary>
         /// <para>
         /// The amount the right eye affected the weighted gaze point.
         /// </para>
         /// </summary>
-        public System.Single RightWeight;
+        public Single RightWeight;
 
         /// <summary>
         /// <para>
@@ -1396,7 +1396,7 @@ namespace QuickLink2DotNet
 
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 64)]
 #endif
-        public System.String Reserved;
+        public String Reserved;
     }
 
     /// <summary>
@@ -1450,28 +1450,28 @@ namespace QuickLink2DotNet
         /// values range between 15 and 19.
         /// </para>
         /// </summary>
-        public System.Single Focus;
+        public Single Focus;
 
         /// <summary>
         /// <para>
         /// The distance from the device to the user in centimeters.
         /// </para>
         /// </summary>
-        public System.Single Distance;
+        public Single Distance;
 
         /// <summary>
         /// <para>
         /// The current bandwidth of the device.
         /// </para>
         /// </summary>
-        public System.Int32 Bandwidth;
+        public Int32 Bandwidth;
 
         /// <summary>
         /// <para>
         /// The ID of the device that is the source for the current frame.
         /// </para>
         /// </summary>
-        public System.Int32 DeviceId;
+        public Int32 DeviceId;
 
         /// <summary>
         /// <para>
@@ -1486,7 +1486,7 @@ namespace QuickLink2DotNet
 
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 56)]
 #endif
-        public System.String Reserved;
+        public String Reserved;
     }
 
     #endregion Structures

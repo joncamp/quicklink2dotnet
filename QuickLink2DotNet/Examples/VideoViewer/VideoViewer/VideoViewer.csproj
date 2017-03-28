@@ -13,6 +13,8 @@
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -36,7 +38,29 @@
   <PropertyGroup>
     <StartupObject />
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="QuickLink2DotNet, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\QuickLink2DotNet.1.0.0\lib\net40-client\QuickLink2DotNet.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -57,12 +81,23 @@
       <Project>{C059CF24-B4CF-4C99-8CCA-951044A0807E}</Project>
       <Name>QuickLink2DotNetHelper</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\QuickLink2DotNet\QuickLink2DotNet.csproj">
-      <Project>{95D15B06-7319-4839-850B-C35F63B4FCCF}</Project>
-      <Name>QuickLink2DotNet</Name>
-    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="LICENSE.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\QuickLink2DotNet.1.0.0\build\QuickLink2DotNet.targets" Condition="Exists('..\packages\QuickLink2DotNet.1.0.0\build\QuickLink2DotNet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\QuickLink2DotNet.1.0.0\build\QuickLink2DotNet.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\QuickLink2DotNet.1.0.0\build\QuickLink2DotNet.targets'))" />
+    <Error Condition="!Exists('..\..\..\..\packages\QuickLink2DotNetHelper.1.0.0\build\QuickLink2DotNetHelper.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages\QuickLink2DotNetHelper.1.0.0\build\QuickLink2DotNetHelper.targets'))" />
+  </Target>
+  <Import Project="..\..\..\..\packages\QuickLink2DotNetHelper.1.0.0\build\QuickLink2DotNetHelper.targets" Condition="Exists('..\..\..\..\packages\QuickLink2DotNetHelper.1.0.0\build\QuickLink2DotNetHelper.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

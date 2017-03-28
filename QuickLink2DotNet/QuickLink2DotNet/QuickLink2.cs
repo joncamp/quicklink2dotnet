@@ -46,6 +46,7 @@
 
 using System;
 using System.Runtime.InteropServices;
+using System.Text;
 
 namespace QuickLink2DotNet
 {
@@ -95,8 +96,8 @@ namespace QuickLink2DotNet
         public static extern
         QLError
            QLAPI_GetVersion(
-               System.Int32 bufferSize,
-               System.Text.StringBuilder buffer);
+               Int32 bufferSize,
+               StringBuilder buffer);
 
         /// <summary>
         /// <para>
@@ -134,7 +135,7 @@ namespace QuickLink2DotNet
         public static extern
         QLError
            QLAPI_ExportSettings(
-               System.Int32 settingsId);
+               Int32 settingsId);
 
         /// <summary>
         /// <para>
@@ -176,7 +177,7 @@ namespace QuickLink2DotNet
         public static extern
         QLError
            QLAPI_ImportSettings(
-               System.Int32 settingsId);
+               Int32 settingsId);
 
         #endregion Group: API
 
@@ -254,8 +255,8 @@ namespace QuickLink2DotNet
         public static extern
         QLError
            QLDevice_Enumerate(
-               ref System.Int32 numDevices,
-               [In, Out] System.Int32[] deviceBuffer);
+               ref Int32 numDevices,
+               [In, Out] Int32[] deviceBuffer);
 
         /// <summary>
         /// <para>
@@ -304,7 +305,7 @@ namespace QuickLink2DotNet
         public static extern
         QLError
            QLDevice_GetInfo(
-               System.Int32 deviceId,
+               Int32 deviceId,
                out QLDeviceInfo info);
 
         /// <summary>
@@ -355,7 +356,7 @@ namespace QuickLink2DotNet
         public static extern
         QLError
            QLDevice_GetStatus(
-               System.Int32 deviceId,
+               Int32 deviceId,
                out QLDeviceStatus status);
 
         /// <summary>
@@ -420,8 +421,8 @@ namespace QuickLink2DotNet
         public static extern
         QLError
             QLDevice_ExportSettings(
-               System.Int32 deviceId,
-               System.Int32 settingsId);
+               Int32 deviceId,
+               Int32 settingsId);
 
         /// <summary>
         /// <para>
@@ -490,8 +491,8 @@ namespace QuickLink2DotNet
         public static extern
         QLError
            QLDevice_ImportSettings(
-               System.Int32 deviceOrGroupId,
-               System.Int32 settingsId);
+               Int32 deviceOrGroupId,
+               Int32 settingsId);
 
         /// <summary>
         /// <para>
@@ -543,8 +544,8 @@ namespace QuickLink2DotNet
         public static extern
         QLError
             QLDevice_IsSettingSupported(
-                System.Int32 deviceId,
-                [In] System.String settingName);
+                Int32 deviceId,
+                [In] String settingName);
 
         /// <summary>
         /// <para>
@@ -600,8 +601,8 @@ namespace QuickLink2DotNet
         public static extern
         QLError
             QLDevice_SetPassword(
-                System.Int32 deviceId,
-                [In] System.String password);
+                Int32 deviceId,
+                [In] String password);
 
         /// <summary>
         /// <para>
@@ -651,7 +652,7 @@ namespace QuickLink2DotNet
         public static extern
         QLError
            QLDevice_Start(
-               System.Int32 deviceOrGroupId);
+               Int32 deviceOrGroupId);
 
         /// <summary>
         /// <para>
@@ -707,7 +708,7 @@ namespace QuickLink2DotNet
         public static extern
         QLError
            QLDevice_Stop(
-               System.Int32 deviceOrGroupId);
+               Int32 deviceOrGroupId);
 
         /// <summary>
         /// <para>
@@ -806,7 +807,7 @@ namespace QuickLink2DotNet
         public static extern
         QLError
            QLDevice_SetIndicator(
-               System.Int32 deviceOrGroupId,
+               Int32 deviceOrGroupId,
                QLIndicatorType type,
                QLIndicatorMode mode);
 
@@ -860,7 +861,7 @@ namespace QuickLink2DotNet
         public static extern
         QLError
            QLDevice_GetIndicator(
-               System.Int32 deviceId,
+               Int32 deviceId,
                QLIndicatorType type,
                out QLIndicatorMode mode);
 
@@ -940,8 +941,8 @@ namespace QuickLink2DotNet
         public static extern
         QLError
            QLDevice_GetFrame(
-               System.Int32 deviceOrGroupId,
-               System.Int32 waitTime,
+               Int32 deviceOrGroupId,
+               Int32 waitTime,
                ref QLFrameData frame);
 
         /// <summary>
@@ -991,8 +992,8 @@ namespace QuickLink2DotNet
         public static extern
         QLError
            QLDevice_ApplyCalibration(
-               System.Int32 deviceId,
-               System.Int32 calibrationId);
+               Int32 deviceId,
+               Int32 calibrationId);
 
         /// <summary>
         /// <para>
@@ -1042,10 +1043,10 @@ namespace QuickLink2DotNet
         [DllImport("QuickLink2.dll", EntryPoint = "QLDevice_CalibrateEyeRadius", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.StdCall, SetLastError = true)]
         public static extern
         QLError QLDevice_CalibrateEyeRadius(
-            System.Int32 deviceId,
-            System.Single distance,
-            out System.Single leftRadius,
-            out System.Single rightRadius);
+            Int32 deviceId,
+            Single distance,
+            out Single leftRadius,
+            out Single rightRadius);
 
         /// <summary>
         /// <para>
@@ -1078,7 +1079,7 @@ namespace QuickLink2DotNet
         [DllImport("QuickLink2.dll", EntryPoint = "QLDeviceGroup_Create", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.StdCall, SetLastError = true)]
         public static extern
         QLError QLDeviceGroup_Create(
-            out System.Int32 deviceGroupID);
+            out Int32 deviceGroupID);
 
         /// <summary>
         /// <para>
@@ -1115,8 +1116,8 @@ namespace QuickLink2DotNet
         [DllImport("QuickLink2.dll", EntryPoint = "QLDeviceGroup_AddDevice", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.StdCall, SetLastError = true)]
         public static extern
         QLError QLDeviceGroup_AddDevice(
-            System.Int32 deviceGroupID,
-            System.Int32 deviceId);
+            Int32 deviceGroupID,
+            Int32 deviceId);
 
         /// <summary>
         /// <para>
@@ -1150,8 +1151,8 @@ namespace QuickLink2DotNet
         [DllImport("QuickLink2.dll", EntryPoint = "QLDeviceGroup_RemoveDevice", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.StdCall, SetLastError = true)]
         public static extern
         QLError QLDeviceGroup_RemoveDevice(
-            System.Int32 deviceGroupID,
-            System.Int32 deviceId);
+            Int32 deviceGroupID,
+            Int32 deviceId);
 
         /// <summary>
         /// <para>
@@ -1202,9 +1203,9 @@ namespace QuickLink2DotNet
         [DllImport("QuickLink2.dll", EntryPoint = "QLDeviceGroup_Enumerate", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.StdCall, SetLastError = true)]
         public static extern
         QLError QLDeviceGroup_Enumerate(
-            System.Int32 deviceGroupID,
-            ref System.Int32 numDevices,
-            [In, Out] System.Int32[] deviceBuffer);
+            Int32 deviceGroupID,
+            ref Int32 numDevices,
+            [In, Out] Int32[] deviceBuffer);
 
         /// <summary>
         /// <para>
@@ -1262,9 +1263,9 @@ namespace QuickLink2DotNet
         [DllImport("QuickLink2.dll", EntryPoint = "QLDeviceGroup_GetFrame", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.StdCall, SetLastError = true)]
         public static extern
         QLError QLDeviceGroup_GetFrame(
-            System.Int32 deviceGroupID,
-            System.Int32 waitTime,
-            ref System.Int32 numFrames,
+            Int32 deviceGroupID,
+            Int32 waitTime,
+            ref Int32 numFrames,
             [In, Out] QLFrameData[] frameBuffer);
 
         #endregion Group: Device
@@ -1313,8 +1314,8 @@ namespace QuickLink2DotNet
         public static extern
         QLError
            QLSettings_Load(
-               [In] System.String path,
-               ref System.Int32 settingsId);
+               [In] String path,
+               ref Int32 settingsId);
 
         /// <summary>
         /// <para>
@@ -1351,8 +1352,8 @@ namespace QuickLink2DotNet
         public static extern
         QLError
            QLSettings_Save(
-               [In] System.String path,
-               System.Int32 settingsId);
+               [In] String path,
+               Int32 settingsId);
 
         /// <summary>
         /// <para>
@@ -1397,8 +1398,8 @@ namespace QuickLink2DotNet
         public static extern
         QLError
            QLSettings_Create(
-               System.Int32 sourceID,
-               out System.Int32 settingsId);
+               Int32 sourceID,
+               out Int32 settingsId);
 
         /// <summary>
         /// <para>
@@ -1437,8 +1438,8 @@ namespace QuickLink2DotNet
         public static extern
         QLError
            QLSettings_AddSetting(
-               System.Int32 settingsId,
-               [In] System.String settingName);
+               Int32 settingsId,
+               [In] String settingName);
 
         /// <summary>
         /// <para>
@@ -1476,8 +1477,8 @@ namespace QuickLink2DotNet
         public static extern
         QLError
            QLSettings_RemoveSetting(
-               System.Int32 settingsId,
-               [In] System.String settingName);
+               Int32 settingsId,
+               [In] String settingName);
 
         /// <summary>
         /// <para>
@@ -1542,10 +1543,10 @@ namespace QuickLink2DotNet
         public static extern
         QLError
            QLSettings_SetValue(
-               System.Int32 settingsId,
-               [In] System.String settingName,
+               Int32 settingsId,
+               [In] String settingName,
                QLSettingType settingType,
-               [In] System.IntPtr value);
+               [In] IntPtr value);
 
         /// <summary>
         /// <para>
@@ -1590,9 +1591,9 @@ namespace QuickLink2DotNet
         public static extern
         QLError
             QLSettings_SetValueInt(
-                System.Int32 settingsId,
-                [In] System.String settingName,
-                System.Int32 value);
+                Int32 settingsId,
+                [In] String settingName,
+                Int32 value);
 
         /// <summary>
         /// <para>
@@ -1637,9 +1638,9 @@ namespace QuickLink2DotNet
         public static extern
         QLError
             QLSettings_SetValueInt8(
-                System.Int32 settingsId,
-                [In] System.String settingName,
-                System.SByte value);
+                Int32 settingsId,
+                [In] String settingName,
+                SByte value);
 
         /// <summary>
         /// <para>
@@ -1684,9 +1685,9 @@ namespace QuickLink2DotNet
         public static extern
         QLError
             QLSettings_SetValueInt16(
-                System.Int32 settingsId,
-                [In] System.String settingName,
-                System.Int16 value);
+                Int32 settingsId,
+                [In] String settingName,
+                Int16 value);
 
         /// <summary>
         /// <para>
@@ -1731,9 +1732,9 @@ namespace QuickLink2DotNet
         public static extern
         QLError
             QLSettings_SetValueInt32(
-                System.Int32 settingsId,
-                [In] System.String settingName,
-                System.Int32 value);
+                Int32 settingsId,
+                [In] String settingName,
+                Int32 value);
 
         /// <summary>
         /// <para>
@@ -1778,9 +1779,9 @@ namespace QuickLink2DotNet
         public static extern
         QLError
             QLSettings_SetValueInt64(
-                System.Int32 settingsId,
-                [In] System.String settingName,
-                System.Int64 value);
+                Int32 settingsId,
+                [In] String settingName,
+                Int64 value);
 
         /// <summary>
         /// <para>
@@ -1825,9 +1826,9 @@ namespace QuickLink2DotNet
         public static extern
         QLError
             QLSettings_SetValueUInt(
-                System.Int32 settingsId,
-                [In] System.String settingName,
-                System.UInt32 value);
+                Int32 settingsId,
+                [In] String settingName,
+                UInt32 value);
 
         /// <summary>
         /// <para>
@@ -1872,9 +1873,9 @@ namespace QuickLink2DotNet
         public static extern
         QLError
             QLSettings_SetValueUInt8(
-                System.Int32 settingsId,
-                [In] System.String settingName,
-                System.Byte value);
+                Int32 settingsId,
+                [In] String settingName,
+                Byte value);
 
         /// <summary>
         /// <para>
@@ -1919,9 +1920,9 @@ namespace QuickLink2DotNet
         public static extern
         QLError
             QLSettings_SetValueUInt16(
-                System.Int32 settingsId,
-                [In] System.String settingName,
-                System.UInt16 value);
+                Int32 settingsId,
+                [In] String settingName,
+                UInt16 value);
 
         /// <summary>
         /// <para>
@@ -1966,9 +1967,9 @@ namespace QuickLink2DotNet
         public static extern
         QLError
             QLSettings_SetValueUInt32(
-                System.Int32 settingsId,
-                [In] System.String settingName,
-                System.UInt32 value);
+                Int32 settingsId,
+                [In] String settingName,
+                UInt32 value);
 
         /// <summary>
         /// <para>
@@ -2013,9 +2014,9 @@ namespace QuickLink2DotNet
         public static extern
         QLError
             QLSettings_SetValueUInt64(
-                System.Int32 settingsId,
-                [In] System.String settingName,
-                System.UInt64 value);
+                Int32 settingsId,
+                [In] String settingName,
+                UInt64 value);
 
         /// <summary>
         /// <para>
@@ -2060,9 +2061,9 @@ namespace QuickLink2DotNet
         public static extern
         QLError
             QLSettings_SetValueFloat(
-                System.Int32 settingsId,
-                [In] System.String settingName,
-                System.Single value);
+                Int32 settingsId,
+                [In] String settingName,
+                Single value);
 
         /// <summary>
         /// <para>
@@ -2107,9 +2108,9 @@ namespace QuickLink2DotNet
         public static extern
         QLError
             QLSettings_SetValueDouble(
-                System.Int32 settingsId,
-                [In] System.String settingName,
-                System.Double value);
+                Int32 settingsId,
+                [In] String settingName,
+                Double value);
 
         /// <summary>
         /// <para>
@@ -2154,9 +2155,9 @@ namespace QuickLink2DotNet
         public static extern
         QLError
             QLSettings_SetValueBool(
-                System.Int32 settingsId,
-                [In] System.String settingName,
-                [MarshalAs(UnmanagedType.VariantBool)] System.Boolean value);
+                Int32 settingsId,
+                [In] String settingName,
+                [MarshalAs(UnmanagedType.VariantBool)] Boolean value);
 
         /// <summary>
         /// <para>
@@ -2201,9 +2202,9 @@ namespace QuickLink2DotNet
         public static extern
         QLError
             QLSettings_SetValueVoidPointer(
-                System.Int32 settingsId,
-                [In] System.String settingName,
-                [In] System.IntPtr value);
+                Int32 settingsId,
+                [In] String settingName,
+                [In] IntPtr value);
 
         /// <summary>
         /// <para>
@@ -2248,9 +2249,9 @@ namespace QuickLink2DotNet
         public static extern
         QLError
             QLSettings_SetValueString(
-                System.Int32 settingsId,
-                [In] System.String settingName,
-                System.String value);
+                Int32 settingsId,
+                [In] String settingName,
+                String value);
 
         /// <summary>
         /// <para>
@@ -2314,11 +2315,11 @@ namespace QuickLink2DotNet
         public static extern
         QLError
            QLSettings_GetValue(
-               System.Int32 settingsId,
-               [In] System.String settingName,
+               Int32 settingsId,
+               [In] String settingName,
                QLSettingType settingType,
-               System.Int32 size,
-               System.IntPtr value);
+               Int32 size,
+               IntPtr value);
 
         /// <summary>
         /// <para>
@@ -2362,9 +2363,9 @@ namespace QuickLink2DotNet
         public static extern
         QLError
             QLSettings_GetValueInt(
-                System.Int32 settingsId,
-                [In] System.String settingName,
-                out System.Int32 value);
+                Int32 settingsId,
+                [In] String settingName,
+                out Int32 value);
 
         /// <summary>
         /// <para>
@@ -2408,9 +2409,9 @@ namespace QuickLink2DotNet
         public static extern
         QLError
             QLSettings_GetValueInt8(
-                System.Int32 settingsId,
-                [In] System.String settingName,
-                out System.SByte value);
+                Int32 settingsId,
+                [In] String settingName,
+                out SByte value);
 
         /// <summary>
         /// <para>
@@ -2454,9 +2455,9 @@ namespace QuickLink2DotNet
         public static extern
         QLError
             QLSettings_GetValueInt16(
-                System.Int32 settingsId,
-                [In] System.String settingName,
-                out System.Int16 value);
+                Int32 settingsId,
+                [In] String settingName,
+                out Int16 value);
 
         /// <summary>
         /// <para>
@@ -2500,9 +2501,9 @@ namespace QuickLink2DotNet
         public static extern
         QLError
             QLSettings_GetValueInt32(
-                System.Int32 settingsId,
-                [In] System.String settingName,
-                out System.Int32 value);
+                Int32 settingsId,
+                [In] String settingName,
+                out Int32 value);
 
         /// <summary>
         /// <para>
@@ -2546,9 +2547,9 @@ namespace QuickLink2DotNet
         public static extern
         QLError
             QLSettings_GetValueInt64(
-                System.Int32 settingsId,
-                [In] System.String settingName,
-                out System.Int64 value);
+                Int32 settingsId,
+                [In] String settingName,
+                out Int64 value);
 
         /// <summary>
         /// <para>
@@ -2592,9 +2593,9 @@ namespace QuickLink2DotNet
         public static extern
         QLError
             QLSettings_GetValueUInt(
-                System.Int32 settingsId,
-                [In] System.String settingName,
-                out System.UInt32 value);
+                Int32 settingsId,
+                [In] String settingName,
+                out UInt32 value);
 
         /// <summary>
         /// <para>
@@ -2638,9 +2639,9 @@ namespace QuickLink2DotNet
         public static extern
         QLError
             QLSettings_GetValueUInt8(
-                System.Int32 settingsId,
-                [In] System.String settingName,
-                out System.Byte value);
+                Int32 settingsId,
+                [In] String settingName,
+                out Byte value);
 
         /// <summary>
         /// <para>
@@ -2684,9 +2685,9 @@ namespace QuickLink2DotNet
         public static extern
         QLError
             QLSettings_GetValueUInt16(
-                System.Int32 settingsId,
-                [In] System.String settingName,
-                out System.UInt16 value);
+                Int32 settingsId,
+                [In] String settingName,
+                out UInt16 value);
 
         /// <summary>
         /// <para>
@@ -2730,9 +2731,9 @@ namespace QuickLink2DotNet
         public static extern
         QLError
             QLSettings_GetValueUInt32(
-                System.Int32 settingsId,
-                [In] System.String settingName,
-                out System.UInt32 value);
+                Int32 settingsId,
+                [In] String settingName,
+                out UInt32 value);
 
         /// <summary>
         /// <para>
@@ -2776,9 +2777,9 @@ namespace QuickLink2DotNet
         public static extern
         QLError
             QLSettings_GetValueUInt64(
-                System.Int32 settingsId,
-                [In] System.String settingName,
-                out System.UInt64 value);
+                Int32 settingsId,
+                [In] String settingName,
+                out UInt64 value);
 
         /// <summary>
         /// <para>
@@ -2822,9 +2823,9 @@ namespace QuickLink2DotNet
         public static extern
         QLError
             QLSettings_GetValueFloat(
-                System.Int32 settingsId,
-                [In] System.String settingName,
-                out System.Single value);
+                Int32 settingsId,
+                [In] String settingName,
+                out Single value);
 
         /// <summary>
         /// <para>
@@ -2868,9 +2869,9 @@ namespace QuickLink2DotNet
         public static extern
         QLError
             QLSettings_GetValueDouble(
-                System.Int32 settingsId,
-                [In] System.String settingName,
-                out System.Double value);
+                Int32 settingsId,
+                [In] String settingName,
+                out Double value);
 
         /// <summary>
         /// <para>
@@ -2914,9 +2915,9 @@ namespace QuickLink2DotNet
         public static extern
         QLError
             QLSettings_GetValueBool(
-                System.Int32 settingsId,
-                [In] System.String settingName,
-                [MarshalAs(UnmanagedType.VariantBool)] out System.Boolean value);
+                Int32 settingsId,
+                [In] String settingName,
+                [MarshalAs(UnmanagedType.VariantBool)] out Boolean value);
 
         /// <summary>
         /// <para>
@@ -2960,9 +2961,9 @@ namespace QuickLink2DotNet
         public static extern
         QLError
             QLSettings_GetValueVoidPointer(
-                System.Int32 settingsId,
-                [In] System.String settingName,
-                System.IntPtr value);
+                Int32 settingsId,
+                [In] String settingName,
+                IntPtr value);
 
         /// <summary>
         /// <para>
@@ -3010,10 +3011,10 @@ namespace QuickLink2DotNet
         public static extern
         QLError
             QLSettings_GetValueString(
-                System.Int32 settingsId,
-                [In] System.String settingName,
-                System.Int32 size,
-                System.Text.StringBuilder value);
+                Int32 settingsId,
+                [In] String settingName,
+                Int32 size,
+                StringBuilder value);
 
         /// <summary>
         /// <para>
@@ -3061,9 +3062,9 @@ namespace QuickLink2DotNet
         public static extern
         QLError
            QLSettings_GetValueStringSize(
-               System.Int32 settingsId,
-               [In] System.String settingName,
-               out System.Int32 size);
+               Int32 settingsId,
+               [In] String settingName,
+               out Int32 size);
 
         #endregion Group: Settings
 
@@ -3107,8 +3108,8 @@ namespace QuickLink2DotNet
         public static extern
         QLError
            QLCalibration_Load(
-               [In] System.String path,
-               ref System.Int32 calibrationId);
+               [In] String path,
+               ref Int32 calibrationId);
 
         /// <summary>
         /// <para>
@@ -3147,8 +3148,8 @@ namespace QuickLink2DotNet
         public static extern
         QLError
            QLCalibration_Save(
-               [In] System.String path,
-               System.Int32 calibrationId);
+               [In] String path,
+               Int32 calibrationId);
 
         /// <summary>
         /// <para>
@@ -3189,8 +3190,8 @@ namespace QuickLink2DotNet
         public static extern
         QLError
            QLCalibration_Create(
-               System.Int32 sourceID,
-               out System.Int32 calibrationId);
+               Int32 sourceID,
+               out Int32 calibrationId);
 
         /// <summary>
         /// <para>
@@ -3236,8 +3237,8 @@ namespace QuickLink2DotNet
         public static extern
         QLError
            QLCalibration_Initialize(
-               System.Int32 deviceId,
-               System.Int32 calibrationId,
+               Int32 deviceId,
+               Int32 calibrationId,
                QLCalibrationType type);
 
         /// <summary>
@@ -3285,8 +3286,8 @@ namespace QuickLink2DotNet
         public static extern
         QLError
            QLCalibration_GetTargets(
-               System.Int32 calibrationId,
-               ref System.Int32 numTargets,
+               Int32 calibrationId,
+               ref Int32 numTargets,
                 [In, Out] QLCalibrationTarget[] targets);
 
         /// <summary>
@@ -3351,10 +3352,10 @@ namespace QuickLink2DotNet
         public static extern
         QLError
            QLCalibration_Calibrate(
-               System.Int32 calibrationId,
-               System.Int32 targetID,
-               System.Int32 duration,
-               [MarshalAs(UnmanagedType.VariantBool)] System.Boolean block);
+               Int32 calibrationId,
+               Int32 targetID,
+               Int32 duration,
+               [MarshalAs(UnmanagedType.VariantBool)] Boolean block);
 
         /// <summary>
         /// <para>
@@ -3409,8 +3410,8 @@ namespace QuickLink2DotNet
         public static extern
         QLError
            QLCalibration_GetScoring(
-               System.Int32 calibrationId,
-               System.Int32 targetID,
+               Int32 calibrationId,
+               Int32 targetID,
                QLEyeType eye,
                out QLCalibrationScore score);
 
@@ -3457,8 +3458,8 @@ namespace QuickLink2DotNet
         public static extern
         QLError
            QLCalibration_GetStatus(
-               System.Int32 calibrationId,
-               System.Int32 targetID,
+               Int32 calibrationId,
+               Int32 targetID,
                out QLCalibrationStatus calibrationStatus);
 
         /// <summary>
@@ -3500,7 +3501,7 @@ namespace QuickLink2DotNet
         public static extern
         QLError
            QLCalibration_Finalize(
-               System.Int32 calibrationId);
+               Int32 calibrationId);
 
         /// <summary>
         /// <para>
@@ -3537,7 +3538,7 @@ namespace QuickLink2DotNet
         public static extern
         QLError
            QLCalibration_Cancel(
-               System.Int32 calibrationId);
+               Int32 calibrationId);
 
         /// <summary>
         /// <para>
@@ -3586,10 +3587,10 @@ namespace QuickLink2DotNet
         public static extern
         QLError
            QLCalibration_AddBias(
-               System.Int32 calibrationId,
+               Int32 calibrationId,
                QLEyeType eye,
-               System.Single xOffset,
-               System.Single yOffset);
+               Single xOffset,
+               Single yOffset);
 
         #endregion Group: Calibration
     }
