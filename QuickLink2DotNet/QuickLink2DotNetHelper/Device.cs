@@ -64,10 +64,10 @@ namespace QuickLink2DotNetHelper
         /// </exception>
         public static QLError DeviceEnumerate(out int[] deviceIds)
         {
-            int numDevices = 1;
+            var numDevices = 1;
             deviceIds = new int[numDevices];
 
-            QLError error = QuickLink2API.QLDevice_Enumerate(ref numDevices, deviceIds);
+            var error = QuickLink2API.QLDevice_Enumerate(ref numDevices, deviceIds);
 
             if (error == QLError.QL_ERROR_BUFFER_TOO_SMALL)
             {
@@ -82,7 +82,7 @@ namespace QuickLink2DotNetHelper
                 return error;
             }
 
-            for (int i = 0; i < numDevices; i++)
+            for (var i = 0; i < numDevices; i++)
             {
                 if (deviceIds[i] <= 0)
                 {
@@ -119,15 +119,15 @@ namespace QuickLink2DotNetHelper
 
             Console.WriteLine("Detected {0} devices:{1}", deviceIds.Length, Environment.NewLine);
 
-            for (int i = 0; i < deviceIds.Length; i++)
+            for (var i = 0; i < deviceIds.Length; i++)
             {
-                int deviceId = deviceIds[i];
+                var deviceId = deviceIds[i];
 
                 QLDeviceInfo info;
-                QLError error = QuickLink2API.QLDevice_GetInfo(deviceId, out info);
+                var error = QuickLink2API.QLDevice_GetInfo(deviceId, out info);
                 if (error != QLError.QL_ERROR_OK)
                 {
-                    Console.WriteLine("  ID: {0}; QLDevice_GetInfo() returned {1}{2}", deviceId, error.ToString(), Environment.NewLine);
+                    Console.WriteLine("  ID: {0}; QLDevice_GetInfo() returned {1}{2}", deviceId, error, Environment.NewLine);
                 }
                 else
                 {
@@ -158,7 +158,7 @@ namespace QuickLink2DotNetHelper
         public static QLHelper FromDeviceId(int deviceId)
         {
             QLDeviceInfo info;
-            QLError error = QuickLink2API.QLDevice_GetInfo(deviceId, out info);
+            var error = QuickLink2API.QLDevice_GetInfo(deviceId, out info);
             if (error != QLError.QL_ERROR_OK)
             {
                 return null;
@@ -187,10 +187,10 @@ namespace QuickLink2DotNetHelper
         {
             int[] deviceIds;
 
-            QLError error = DeviceEnumerate(out deviceIds);
+            var error = DeviceEnumerate(out deviceIds);
             if (error != QLError.QL_ERROR_OK)
             {
-                Console.WriteLine("QLDevice_Enumerate() returned {0}.", error.ToString());
+                Console.WriteLine("QLDevice_Enumerate() returned {0}.", error);
                 return null;
             }
 
@@ -207,29 +207,26 @@ namespace QuickLink2DotNetHelper
                 return FromDeviceId(deviceIds[0]);
             }
 
-            int deviceId = -1;
+            var deviceId = -1;
 
             do
             {
                 Console.Write("Enter the ID of the device to use (or enter q to quit): ");
-                string answer = Console.ReadLine();
+                var answer = Console.ReadLine();
 
                 if (answer.ToLower().Equals("q"))
                 {
                     break;
                 }
-                else
+                try
                 {
-                    try
-                    {
-                        deviceId = Int32.Parse(answer);
-                    }
-                    catch (ArgumentException) { continue; }
-                    catch (FormatException) { continue; }
-                    catch (OverflowException) { continue; }
+                    deviceId = Int32.Parse(answer);
                 }
+                catch (ArgumentException) { continue; }
+                catch (FormatException) { continue; }
+                catch (OverflowException) { continue; }
 
-                for (int i = 0; i < deviceIds.Length; i++)
+                for (var i = 0; i < deviceIds.Length; i++)
                 {
                     if (deviceId == deviceIds[i])
                     {

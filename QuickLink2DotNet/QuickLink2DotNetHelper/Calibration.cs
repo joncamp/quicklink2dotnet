@@ -37,11 +37,6 @@
 #endregion Header Comments
 
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
 using QuickLink2DotNet;
 
 namespace QuickLink2DotNetHelper
@@ -109,30 +104,27 @@ namespace QuickLink2DotNetHelper
 
                 Console.Write("  Perform 5, 9, or 16-point calibration ({0}): ", (calibrationType == QLCalibrationType.QL_CALIBRATION_TYPE_5) ? "5" : (calibrationType == QLCalibrationType.QL_CALIBRATION_TYPE_9) ? "9" : "16");
 
-                string input = Console.ReadLine();
+                var input = Console.ReadLine();
 
                 if (input.Length == 0)
                 {
                     return true;
                 }
-                else if (input.ToLower().Equals("q"))
+                if (input.ToLower().Equals("q"))
                 {
                     return false;
                 }
-                else
+                try
                 {
-                    try
+                    var numberOfPoints = int.Parse(input);
+                    if (NumberOfPointsToCalibrationType(numberOfPoints, out calibrationType))
                     {
-                        int numberOfPoints = int.Parse(input);
-                        if (NumberOfPointsToCalibrationType(numberOfPoints, out calibrationType))
-                        {
-                            return true;
-                        }
+                        return true;
                     }
-                    catch (ArgumentNullException) { }
-                    catch (FormatException) { }
-                    catch (OverflowException) { }
                 }
+                catch (ArgumentNullException) { }
+                catch (FormatException) { }
+                catch (OverflowException) { }
             }
         }
 
@@ -149,28 +141,25 @@ namespace QuickLink2DotNetHelper
 
                 Console.Write("  Target duration in milliseconds ({0}ms): ", targetDuration);
 
-                string input = Console.ReadLine();
+                var input = Console.ReadLine();
 
                 if (input.Length == 0)
                 {
                     return true;
                 }
-                else if (input.ToLower().Equals("q"))
+                if (input.ToLower().Equals("q"))
                 {
                     return false;
                 }
-                else
+                try
                 {
-                    try
-                    {
-                        int readNumber = int.Parse(input);
-                        targetDuration = readNumber;
-                        return true;
-                    }
-                    catch (ArgumentNullException) { }
-                    catch (FormatException) { }
-                    catch (OverflowException) { }
+                    var readNumber = int.Parse(input);
+                    targetDuration = readNumber;
+                    return true;
                 }
+                catch (ArgumentNullException) { }
+                catch (FormatException) { }
+                catch (OverflowException) { }
             }
         }
 
@@ -187,28 +176,25 @@ namespace QuickLink2DotNetHelper
 
                 Console.Write("  Distance from device to user ({0}cm): ", deviceDistance);
 
-                string input = Console.ReadLine();
+                var input = Console.ReadLine();
 
                 if (input.Length == 0)
                 {
                     return true;
                 }
-                else if (input.ToLower().Equals("q"))
+                if (input.ToLower().Equals("q"))
                 {
                     return false;
                 }
-                else
+                try
                 {
-                    try
-                    {
-                        int readNumber = int.Parse(input);
-                        deviceDistance = readNumber;
-                        return true;
-                    }
-                    catch (ArgumentNullException) { }
-                    catch (FormatException) { }
-                    catch (OverflowException) { }
+                    var readNumber = int.Parse(input);
+                    deviceDistance = readNumber;
+                    return true;
                 }
+                catch (ArgumentNullException) { }
+                catch (FormatException) { }
+                catch (OverflowException) { }
             }
         }
 
@@ -221,14 +207,14 @@ namespace QuickLink2DotNetHelper
 
                 Console.Write("  Recalibrate? (y/n): ");
 
-                ConsoleKeyInfo keyInfo = Console.ReadKey();
+                var keyInfo = Console.ReadKey();
                 Console.WriteLine();
 
                 if (keyInfo.Key == ConsoleKey.N)
                 {
                     return false;
                 }
-                else if (keyInfo.Key == ConsoleKey.Y)
+                if (keyInfo.Key == ConsoleKey.Y)
                 {
                     return true;
                 }
@@ -244,14 +230,14 @@ namespace QuickLink2DotNetHelper
 
                 Console.Write("  Apply? (y/n): ");
 
-                ConsoleKeyInfo keyInfo = Console.ReadKey();
+                var keyInfo = Console.ReadKey();
                 Console.WriteLine();
 
                 if (keyInfo.Key == ConsoleKey.N)
                 {
                     return false;
                 }
-                else if (keyInfo.Key == ConsoleKey.Y)
+                if (keyInfo.Key == ConsoleKey.Y)
                 {
                     return true;
                 }
@@ -285,19 +271,19 @@ namespace QuickLink2DotNetHelper
                 while (Console.KeyAvailable) { Console.ReadKey(true); }
 
                 Console.Write("View the video image? (y/n/q): ");
-                ConsoleKeyInfo videoKeyInfo = Console.ReadKey();
+                var videoKeyInfo = Console.ReadKey();
                 Console.WriteLine();
 
                 if (videoKeyInfo.Key == ConsoleKey.Q)
                 {
                     return false;
                 }
-                else if (videoKeyInfo.Key == ConsoleKey.N)
+                if (videoKeyInfo.Key == ConsoleKey.N)
                 {
                     showVideoStream = false;
                     return true;
                 }
-                else if (videoKeyInfo.Key == ConsoleKey.Y)
+                if (videoKeyInfo.Key == ConsoleKey.Y)
                 {
                     showVideoStream = true;
                     return true;
@@ -309,18 +295,18 @@ namespace QuickLink2DotNetHelper
         {
             value = 0;
 
-            int settingsId = 0;
-            QLError error = QuickLink2API.QLSettings_Load(settingsFilename, ref settingsId);
+            var settingsId = 0;
+            var error = QuickLink2API.QLSettings_Load(settingsFilename, ref settingsId);
             if (error != QLError.QL_ERROR_OK)
             {
-                Console.WriteLine("QLSettings_Load() returned {0}.", error.ToString());
+                Console.WriteLine("QLSettings_Load() returned {0}.", error);
                 return false;
             }
 
             error = QuickLink2API.QLSettings_GetValueInt(settingsId, QL_SETTINGS.QL_SETTING_DEVICE_DISTANCE, out value);
             if (error != QLError.QL_ERROR_OK && error != QLError.QL_ERROR_INVALID_PATH && error != QLError.QL_ERROR_NOT_FOUND)
             {
-                Console.WriteLine("QLSettings_GetValueInt() returned {0}.", error.ToString());
+                Console.WriteLine("QLSettings_GetValueInt() returned {0}.", error);
                 return false;
             }
 
@@ -329,25 +315,25 @@ namespace QuickLink2DotNetHelper
 
         private static bool SaveDeviceDistance(string settingsFilename, int value)
         {
-            int settingsId = 0;
-            QLError error = QuickLink2API.QLSettings_Load(settingsFilename, ref settingsId);
+            var settingsId = 0;
+            var error = QuickLink2API.QLSettings_Load(settingsFilename, ref settingsId);
             if (error != QLError.QL_ERROR_OK)
             {
-                Console.WriteLine("QLSettings_Load() returned {0}.", error.ToString());
+                Console.WriteLine("QLSettings_Load() returned {0}.", error);
                 return false;
             }
 
             error = QuickLink2API.QLSettings_SetValueInt(settingsId, QL_SETTINGS.QL_SETTING_DEVICE_DISTANCE, value);
             if (error != QLError.QL_ERROR_OK)
             {
-                Console.WriteLine("QLSettings_SetValueInt() returned {0}.", error.ToString());
+                Console.WriteLine("QLSettings_SetValueInt() returned {0}.", error);
                 return false;
             }
 
             error = QuickLink2API.QLSettings_Save(settingsFilename, settingsId);
             if (error != QLError.QL_ERROR_OK)
             {
-                Console.WriteLine("QLSettings_Save() returned {0}.", error.ToString());
+                Console.WriteLine("QLSettings_Save() returned {0}.", error);
                 return false;
             }
 
@@ -357,24 +343,24 @@ namespace QuickLink2DotNetHelper
         private static bool ApplyDeviceDistance(int deviceId, int value)
         {
             int settingsId;
-            QLError error = QuickLink2API.QLSettings_Create(0, out settingsId);
+            var error = QuickLink2API.QLSettings_Create(0, out settingsId);
             if (error != QLError.QL_ERROR_OK)
             {
-                Console.WriteLine("QLSettings_Create() returned {0}.", error.ToString());
+                Console.WriteLine("QLSettings_Create() returned {0}.", error);
                 return false;
             }
 
             error = QuickLink2API.QLSettings_SetValueInt(settingsId, QL_SETTINGS.QL_SETTING_DEVICE_DISTANCE, value);
             if (error != QLError.QL_ERROR_OK)
             {
-                Console.WriteLine("QLSettings_SetValueInt() returned {0}.", error.ToString());
+                Console.WriteLine("QLSettings_SetValueInt() returned {0}.", error);
                 return false;
             }
 
             error = QuickLink2API.QLDevice_ImportSettings(deviceId, settingsId);
             if (error != QLError.QL_ERROR_OK)
             {
-                Console.WriteLine("QLDevice_ImportSettings() returned {0}.", error.ToString());
+                Console.WriteLine("QLDevice_ImportSettings() returned {0}.", error);
                 return false;
             }
 
@@ -384,22 +370,22 @@ namespace QuickLink2DotNetHelper
         private bool ShowVideoStream()
         {
             // Start the device.
-            QLError error = QuickLink2API.QLDevice_Start(this.DeviceId);
+            var error = QuickLink2API.QLDevice_Start(DeviceId);
             if (error != QLError.QL_ERROR_OK)
             {
-                Console.WriteLine("QLDevice_Start() returned {0}.", error.ToString());
+                Console.WriteLine("QLDevice_Start() returned {0}.", error);
                 return false;
             }
 
-            using (QLHelper.VideoForm videoForm = new QLHelper.VideoForm(this))
+            using (var videoForm = new VideoForm(this))
             {
                 videoForm.ShowDialog();
             }
 
-            error = QuickLink2API.QLDevice_Stop(this.DeviceId);
+            error = QuickLink2API.QLDevice_Stop(DeviceId);
             if (error != QLError.QL_ERROR_OK)
             {
-                Console.WriteLine("QLDevice_Stop() returned {0}.", error.ToString());
+                Console.WriteLine("QLDevice_Stop() returned {0}.", error);
                 return false;
             }
 
@@ -409,26 +395,26 @@ namespace QuickLink2DotNetHelper
         private static bool Calibrate(int deviceId, string calibrationFilename, int deviceDistance, QLCalibrationType calibrationType, int targetDuration)
         {
             // Start the device.
-            QLError error = QuickLink2API.QLDevice_Start(deviceId);
+            var error = QuickLink2API.QLDevice_Start(deviceId);
             if (error != QLError.QL_ERROR_OK)
             {
-                Console.WriteLine("QLDevice_Start() returned {0}.", error.ToString());
+                Console.WriteLine("QLDevice_Start() returned {0}.", error);
                 return false;
             }
 
-            bool calibrationSuccessful = false;
-            using (CalibrationForm calibrationForm = new CalibrationForm(deviceId, calibrationType, targetDuration))
+            var calibrationSuccessful = false;
+            using (var calibrationForm = new CalibrationForm(deviceId, calibrationType, targetDuration))
             {
                 if (calibrationForm.Calibrate())
                 {
                     // Calculate the total average score.
                     float avg = 0;
-                    for (int i = 0; i < calibrationForm.LeftScores.Length; i++)
+                    for (var i = 0; i < calibrationForm.LeftScores.Length; i++)
                     {
                         avg += calibrationForm.LeftScores[i].score;
                         avg += calibrationForm.RightScores[i].score;
                     }
-                    avg /= (float)calibrationForm.LeftScores.Length * 2f;
+                    avg /= calibrationForm.LeftScores.Length * 2f;
 
                     Console.WriteLine("Calibration Score: {0}.", avg);
 
@@ -443,35 +429,32 @@ namespace QuickLink2DotNetHelper
                             calibrationSuccessful = false;
                             break;
                         }
-                        else
+                        error = QuickLink2API.QLCalibration_Finalize(calibrationForm.CalibrationId);
+                        if (error != QLError.QL_ERROR_OK)
                         {
-                            error = QuickLink2API.QLCalibration_Finalize(calibrationForm.CalibrationId);
-                            if (error != QLError.QL_ERROR_OK)
-                            {
-                                Console.WriteLine("QLCalibration_Finalize() returned {0}.", error.ToString());
-                                calibrationSuccessful = false;
-                                break;
-                            }
-
-                            error = QuickLink2API.QLDevice_ApplyCalibration(deviceId, calibrationForm.CalibrationId);
-                            if (error != QLError.QL_ERROR_OK)
-                            {
-                                Console.WriteLine("QLCalibration_ApplyCalibration() returned {0}", error.ToString());
-                                calibrationSuccessful = false;
-                                break;
-                            }
-
-                            error = QuickLink2API.QLCalibration_Save(calibrationFilename, calibrationForm.CalibrationId);
-                            if (error != QLError.QL_ERROR_OK)
-                            {
-                                Console.WriteLine("QLCalibration_Save() returned {0}", error.ToString());
-                                calibrationSuccessful = false;
-                                break;
-                            }
-
-                            calibrationSuccessful = true;
+                            Console.WriteLine("QLCalibration_Finalize() returned {0}.", error);
+                            calibrationSuccessful = false;
                             break;
                         }
+
+                        error = QuickLink2API.QLDevice_ApplyCalibration(deviceId, calibrationForm.CalibrationId);
+                        if (error != QLError.QL_ERROR_OK)
+                        {
+                            Console.WriteLine("QLCalibration_ApplyCalibration() returned {0}", error);
+                            calibrationSuccessful = false;
+                            break;
+                        }
+
+                        error = QuickLink2API.QLCalibration_Save(calibrationFilename, calibrationForm.CalibrationId);
+                        if (error != QLError.QL_ERROR_OK)
+                        {
+                            Console.WriteLine("QLCalibration_Save() returned {0}", error);
+                            calibrationSuccessful = false;
+                            break;
+                        }
+
+                        calibrationSuccessful = true;
+                        break;
                     }
                 }
             }
@@ -479,7 +462,7 @@ namespace QuickLink2DotNetHelper
             error = QuickLink2API.QLDevice_Stop(deviceId);
             if (error != QLError.QL_ERROR_OK)
             {
-                Console.WriteLine("QLDevice_Stop() returned {0}.", error.ToString());
+                Console.WriteLine("QLDevice_Stop() returned {0}.", error);
                 return false;
             }
 
@@ -555,7 +538,7 @@ namespace QuickLink2DotNetHelper
         public bool SetupCalibration(bool promptToRecalibrate)
         {
             int deviceDistance;
-            if (!LoadDeviceDistance(this.SettingsFilename, out deviceDistance))
+            if (!LoadDeviceDistance(SettingsFilename, out deviceDistance))
             {
                 return false;
             }
@@ -563,26 +546,26 @@ namespace QuickLink2DotNetHelper
             if (deviceDistance == 0)
             {
                 deviceDistance = DefaultDeviceDistance;
-                if (!SaveDeviceDistance(this.SettingsFilename, deviceDistance))
+                if (!SaveDeviceDistance(SettingsFilename, deviceDistance))
                 {
                     return false;
                 }
             }
 
-            if (!ApplyDeviceDistance(this.DeviceId, deviceDistance))
+            if (!ApplyDeviceDistance(DeviceId, deviceDistance))
             {
                 return false;
             }
 
-            bool calibrationLoadedFromFile = false;
+            var calibrationLoadedFromFile = false;
 
             // Load the calibration out of a file into a new calibration container.
-            int calibrationId = -1;
-            QLError error = QuickLink2API.QLCalibration_Load(this.CalibrationFilename, ref calibrationId);
+            var calibrationId = -1;
+            var error = QuickLink2API.QLCalibration_Load(CalibrationFilename, ref calibrationId);
             if (error == QLError.QL_ERROR_OK)
             {
                 // Apply the loaded calibration to the device.
-                error = QuickLink2API.QLDevice_ApplyCalibration(this.DeviceId, calibrationId);
+                error = QuickLink2API.QLDevice_ApplyCalibration(DeviceId, calibrationId);
                 if (error == QLError.QL_ERROR_OK)
                 {
                     Console.WriteLine("Calibration loaded from file.");
@@ -605,7 +588,7 @@ namespace QuickLink2DotNetHelper
                 // Cancelled.
                 return calibrationLoadedFromFile;
             }
-            else if (showVideoStream)
+            if (showVideoStream)
             {
                 if (!ShowVideoStream())
                 {
@@ -624,15 +607,15 @@ namespace QuickLink2DotNetHelper
                 // Cancelled.
                 return calibrationLoadedFromFile;
             }
-            else if (newDeviceDistance != deviceDistance)
+            if (newDeviceDistance != deviceDistance)
             {
                 deviceDistance = newDeviceDistance;
-                if (!SaveDeviceDistance(this.SettingsFilename, deviceDistance))
+                if (!SaveDeviceDistance(SettingsFilename, deviceDistance))
                 {
                     // Error.
                     return false;
                 }
-                else if (!ApplyDeviceDistance(this.DeviceId, newDeviceDistance))
+                if (!ApplyDeviceDistance(DeviceId, newDeviceDistance))
                 {
                     // Error.
                     return false;
@@ -656,16 +639,13 @@ namespace QuickLink2DotNetHelper
             Console.WriteLine();
             Console.WriteLine("Beginning calibration.");
 
-            if (!Calibrate(this.DeviceId, this.CalibrationFilename, deviceDistance, calibrationType, targetDuration))
+            if (!Calibrate(DeviceId, CalibrationFilename, deviceDistance, calibrationType, targetDuration))
             {
                 Console.WriteLine("Calibration failed.");
                 return false;
             }
-            else
-            {
-                Console.WriteLine("Calibration completed, applied, and saved.\n");
-                return true;
-            }
+            Console.WriteLine("Calibration completed, applied, and saved.\n");
+            return true;
         }
 
         /// <summary>

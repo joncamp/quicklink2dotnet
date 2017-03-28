@@ -75,7 +75,7 @@ namespace QuickLink2DotNetHelper
 
             private int _numberOfTargets;
 
-            private bool _disposed = false;
+            private bool _disposed;
             private PictureBox _calibrationPictureBox;
 
             /// <summary>
@@ -87,8 +87,8 @@ namespace QuickLink2DotNetHelper
             /// </summary>
             public int MaximumRetries
             {
-                get { return this._maximumRetries; }
-                set { this._maximumRetries = value; }
+                get { return _maximumRetries; }
+                set { _maximumRetries = value; }
             }
             private int _maximumRetries = 2;
 
@@ -101,8 +101,8 @@ namespace QuickLink2DotNetHelper
             /// </summary>
             public float MaximumScore
             {
-                get { return this._maximumScore; }
-                set { this._maximumScore = value; }
+                get { return _maximumScore; }
+                set { _maximumScore = value; }
             }
             private float _maximumScore = 6.25f;
 
@@ -115,8 +115,8 @@ namespace QuickLink2DotNetHelper
             /// </summary>
             public int DelayTimePerTarget
             {
-                get { return this._delayTimePerTarget; }
-                set { this._delayTimePerTarget = value; }
+                get { return _delayTimePerTarget; }
+                set { _delayTimePerTarget = value; }
             }
             private int _delayTimePerTarget = 600;
 
@@ -189,32 +189,32 @@ namespace QuickLink2DotNetHelper
             /// </param>
             public CalibrationForm(int deviceId, QLCalibrationType calibrationType, int targetDuration)
             {
-                this._deviceId = deviceId;
-                this._calibrationType = calibrationType;
-                this._targetDuration = targetDuration;
+                _deviceId = deviceId;
+                _calibrationType = calibrationType;
+                _targetDuration = targetDuration;
 
-                this._calibrationId = 0;
+                _calibrationId = 0;
 
-                QLHelper.CalibrationTypeToNumberOfPoints(this._calibrationType, out this._numberOfTargets);
+                CalibrationTypeToNumberOfPoints(_calibrationType, out _numberOfTargets);
 
-                this._leftScores = new QLCalibrationScore[this._numberOfTargets];
-                this._rightScores = new QLCalibrationScore[this._numberOfTargets];
-                this._targets = new QLCalibrationTarget[this._numberOfTargets];
+                _leftScores = new QLCalibrationScore[_numberOfTargets];
+                _rightScores = new QLCalibrationScore[_numberOfTargets];
+                _targets = new QLCalibrationTarget[_numberOfTargets];
 
-                this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-                this.Width = Screen.PrimaryScreen.WorkingArea.Width;
-                this.Height = Screen.PrimaryScreen.WorkingArea.Height;
-                this.TopMost = false;
-                this.WindowState = System.Windows.Forms.FormWindowState.Minimized;
-                this.Hide();
+                FormBorderStyle = FormBorderStyle.None;
+                Width = Screen.PrimaryScreen.WorkingArea.Width;
+                Height = Screen.PrimaryScreen.WorkingArea.Height;
+                TopMost = false;
+                WindowState = FormWindowState.Minimized;
+                Hide();
 
-                this._calibrationPictureBox = new System.Windows.Forms.PictureBox();
-                this._calibrationPictureBox.BackColor = System.Drawing.SystemColors.ButtonShadow;
-                this._calibrationPictureBox.Dock = System.Windows.Forms.DockStyle.Fill;
-                this._calibrationPictureBox.ClientSize = new Size(Screen.PrimaryScreen.WorkingArea.Width, Screen.PrimaryScreen.WorkingArea.Height);
-                this.Controls.Add(this._calibrationPictureBox);
+                _calibrationPictureBox = new PictureBox();
+                _calibrationPictureBox.BackColor = SystemColors.ButtonShadow;
+                _calibrationPictureBox.Dock = DockStyle.Fill;
+                _calibrationPictureBox.ClientSize = new Size(Screen.PrimaryScreen.WorkingArea.Width, Screen.PrimaryScreen.WorkingArea.Height);
+                Controls.Add(_calibrationPictureBox);
 
-                this._calibrationPictureBox.Paint += new PaintEventHandler(CalibrationPictureBoxPaint);
+                _calibrationPictureBox.Paint += CalibrationPictureBoxPaint;
             }
 
             /// <summary>
@@ -225,88 +225,88 @@ namespace QuickLink2DotNetHelper
             /// </param>
             protected override void Dispose(bool disposing)
             {
-                if (disposing && (!this._disposed))
+                if (disposing && (!_disposed))
                 {
-                    this._calibrationPictureBox.Dispose();
+                    _calibrationPictureBox.Dispose();
 
-                    this._disposed = true;
+                    _disposed = true;
                 }
                 base.Dispose(disposing);
             }
 
             private void CalibrationPictureBoxPaint(object sender, PaintEventArgs e)
             {
-                if (this._drawTarget)
+                if (_drawTarget)
                 {
                     // We have been commanded to draw the current target.
 
-                    this.TopMost = true;
+                    TopMost = true;
 
-                    Graphics g = e.Graphics;
+                    var g = e.Graphics;
 
                     g.SmoothingMode = SmoothingMode.AntiAlias;
 
                     // Paint the target.
-                    int radius = 40;
-                    int diameter = radius * 2;
-                    g.FillEllipse(Brushes.Black, this._targetX - radius, this._targetY - radius, diameter, diameter);
+                    var radius = 40;
+                    var diameter = radius * 2;
+                    g.FillEllipse(Brushes.Black, _targetX - radius, _targetY - radius, diameter, diameter);
                     radius = 38;
                     diameter = radius * 2;
-                    g.FillEllipse(Brushes.Gray, this._targetX - radius, this._targetY - radius, diameter, diameter);
+                    g.FillEllipse(Brushes.Gray, _targetX - radius, _targetY - radius, diameter, diameter);
                     radius = 10;
                     diameter = radius * 2;
-                    g.FillEllipse(Brushes.Yellow, this._targetX - radius, this._targetY - radius, diameter, diameter);
+                    g.FillEllipse(Brushes.Yellow, _targetX - radius, _targetY - radius, diameter, diameter);
 
                     g.Flush();
 
-                    this._drawTarget = false;
+                    _drawTarget = false;
 
                     // Tell the calibration thread we are done drawing the target.
-                    lock (this._drawTargetLock)
+                    lock (_drawTargetLock)
                     {
-                        Monitor.Pulse(this._drawTargetLock);
+                        Monitor.Pulse(_drawTargetLock);
                     }
                 }
             }
 
             private bool CalibrateTarget(int targetIndex)
             {
-                if (!this.Visible)
+                if (!Visible)
                 {
-                    this.Show();
+                    Show();
                 }
 
-                if (!this.TopMost)
+                if (!TopMost)
                 {
-                    this.TopMost = true;
+                    TopMost = true;
                 }
 
-                if (this.WindowState != FormWindowState.Maximized)
+                if (WindowState != FormWindowState.Maximized)
                 {
-                    this.WindowState = FormWindowState.Maximized;
+                    WindowState = FormWindowState.Maximized;
                 }
 
                 if (ActiveForm != this)
                 {
-                    this.Activate();
+                    Activate();
                 }
 
-                this._targetX = (int)Math.Truncate((this.Targets[targetIndex].x / 100f) * (float)this.Size.Width);
-                this._targetY = (int)Math.Truncate((this.Targets[targetIndex].y / 100f) * (float)this.Size.Height);
+                _targetX = (int)Math.Truncate((Targets[targetIndex].x / 100f) * Size.Width);
+                _targetY = (int)Math.Truncate((Targets[targetIndex].y / 100f) * Size.Height);
 
-                bool success = false;
+                var success = false;
 
                 while (true)
                 {
                     // Tell the picture box to draw the new target, and wait for it
                     // to wake us.
-                    this._drawTarget = true;
-                    this._calibrationPictureBox.Refresh();
-                    lock (this._drawTargetLock)
+                    _drawTarget = true;
+                    _calibrationPictureBox.Refresh();
+                    lock (_drawTargetLock)
                     {
-                        while (this._drawTarget)
+                        while (_drawTarget)
                         {
-                            Monitor.Wait(this._drawTargetLock);
+                            Monitor.Wait(_drawTargetLock);
                         }
                     }
 
@@ -314,27 +314,27 @@ namespace QuickLink2DotNetHelper
                     Thread.Sleep(_delayTimePerTarget);
 
                     // Calibrate the target.
-                    QLError error = QuickLink2API.QLCalibration_Calibrate(this._calibrationId, this.Targets[targetIndex].targetId, this._targetDuration, true);
+                    var error = QuickLink2API.QLCalibration_Calibrate(_calibrationId, Targets[targetIndex].targetId, _targetDuration, true);
                     if (error != QLError.QL_ERROR_OK)
                     {
-                        Console.WriteLine("QLCalibration_Calibrate() returned {0}.", error.ToString());
+                        Console.WriteLine("QLCalibration_Calibrate() returned {0}.", error);
                         success = false;
                         break;
                     }
 
                     // Get the status of the last target.
                     QLCalibrationStatus status;
-                    error = QuickLink2API.QLCalibration_GetStatus(this._calibrationId, this.Targets[targetIndex].targetId, out status);
+                    error = QuickLink2API.QLCalibration_GetStatus(_calibrationId, Targets[targetIndex].targetId, out status);
                     if (error != QLError.QL_ERROR_OK)
                     {
-                        Console.WriteLine("QLCalibration_GetStatus() returned {0}.", error.ToString());
+                        Console.WriteLine("QLCalibration_GetStatus() returned {0}.", error);
                         success = false;
                         break;
                     }
 
                     if (status == QLCalibrationStatus.QL_CALIBRATION_STATUS_NO_LEFT_DATA)
                     {
-                        DialogResult result = MessageBox.Show("Left eye not found.  Retry?", "Left Eye Not Found", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                        var result = MessageBox.Show("Left eye not found.  Retry?", "Left Eye Not Found", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
                         if (result != DialogResult.Yes)
                         {
                             Console.WriteLine("User cancelled.");
@@ -344,7 +344,7 @@ namespace QuickLink2DotNetHelper
                     }
                     else if (status == QLCalibrationStatus.QL_CALIBRATION_STATUS_NO_RIGHT_DATA)
                     {
-                        DialogResult result = MessageBox.Show("Right eye not found.  Retry?", "Right Eye Not Found", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                        var result = MessageBox.Show("Right eye not found.  Retry?", "Right Eye Not Found", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
                         if (result != DialogResult.Yes)
                         {
                             Console.WriteLine("User cancelled.");
@@ -354,7 +354,7 @@ namespace QuickLink2DotNetHelper
                     }
                     else if (status == QLCalibrationStatus.QL_CALIBRATION_STATUS_NO_DATA)
                     {
-                        DialogResult result = MessageBox.Show("Neither eye found.  Retry?", "Neither Eye Found", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                        var result = MessageBox.Show("Neither eye found.  Retry?", "Neither Eye Found", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
                         if (result != DialogResult.Yes)
                         {
                             Console.WriteLine("User cancelled.");
@@ -381,19 +381,19 @@ namespace QuickLink2DotNetHelper
             private bool UpdateScores()
             {
                 // Get scores.
-                for (int i = 0; i < this._numberOfTargets; i++)
+                for (var i = 0; i < _numberOfTargets; i++)
                 {
-                    QLError error = QuickLink2API.QLCalibration_GetScoring(this._calibrationId, this.Targets[i].targetId, QLEyeType.QL_EYE_TYPE_LEFT, out this.LeftScores[i]);
+                    var error = QuickLink2API.QLCalibration_GetScoring(_calibrationId, Targets[i].targetId, QLEyeType.QL_EYE_TYPE_LEFT, out LeftScores[i]);
                     if (error != QLError.QL_ERROR_OK)
                     {
-                        Console.WriteLine("QLCalibration_GetScoring(left) returned {0}.", error.ToString());
+                        Console.WriteLine("QLCalibration_GetScoring(left) returned {0}.", error);
                         return false;
                     }
 
-                    error = QuickLink2API.QLCalibration_GetScoring(this._calibrationId, this.Targets[i].targetId, QLEyeType.QL_EYE_TYPE_RIGHT, out this.RightScores[i]);
+                    error = QuickLink2API.QLCalibration_GetScoring(_calibrationId, Targets[i].targetId, QLEyeType.QL_EYE_TYPE_RIGHT, out RightScores[i]);
                     if (error != QLError.QL_ERROR_OK)
                     {
-                        Console.WriteLine("QLCalibration_GetScoring(right) returned {0}.", error.ToString());
+                        Console.WriteLine("QLCalibration_GetScoring(right) returned {0}.", error);
                         return false;
                     }
                 }
@@ -403,18 +403,18 @@ namespace QuickLink2DotNetHelper
 
             private bool ImproveCalibration()
             {
-                int[] retryCount = new int[this._numberOfTargets];
+                var retryCount = new int[_numberOfTargets];
                 bool finished;
                 do
                 {
                     finished = true;
-                    for (int i = 0; i < this._numberOfTargets; i++)
+                    for (var i = 0; i < _numberOfTargets; i++)
                     {
-                        float score = (this.LeftScores[i].score + this.RightScores[i].score) / 2f;
+                        var score = (LeftScores[i].score + RightScores[i].score) / 2f;
 
-                        if (score > this._maximumScore && retryCount[i] <= MaximumRetries)
+                        if (score > _maximumScore && retryCount[i] <= MaximumRetries)
                         {
-                            Console.Write("Score {0:f} exceeds maximum of {1:f}.", score, this._maximumScore);
+                            Console.Write("Score {0:f} exceeds maximum of {1:f}.", score, _maximumScore);
                             if (retryCount[i] < MaximumRetries)
                             {
                                 Console.WriteLine("  Retrying.");
@@ -465,30 +465,30 @@ namespace QuickLink2DotNetHelper
             public bool Calibrate()
             {
                 // Create a new calibration container.
-                QLError error = QuickLink2API.QLCalibration_Create(0, out this._calibrationId);
+                var error = QuickLink2API.QLCalibration_Create(0, out _calibrationId);
                 if (error != QLError.QL_ERROR_OK)
                 {
-                    Console.WriteLine("QLCalibration_Create() returned {0}.", error.ToString());
+                    Console.WriteLine("QLCalibration_Create() returned {0}.", error);
                     return false;
                 }
 
-                error = QuickLink2API.QLCalibration_Initialize(this._deviceId, this._calibrationId, this._calibrationType);
+                error = QuickLink2API.QLCalibration_Initialize(_deviceId, _calibrationId, _calibrationType);
                 if (error != QLError.QL_ERROR_OK)
                 {
-                    Console.WriteLine("QLCalibration_Initialize() returned {0}.", error.ToString());
+                    Console.WriteLine("QLCalibration_Initialize() returned {0}.", error);
                     return false;
                 }
 
-                int numTargets = this._numberOfTargets;
-                error = QuickLink2API.QLCalibration_GetTargets(this._calibrationId, ref numTargets, this.Targets);
+                var numTargets = _numberOfTargets;
+                error = QuickLink2API.QLCalibration_GetTargets(_calibrationId, ref numTargets, Targets);
                 if (error != QLError.QL_ERROR_OK)
                 {
-                    Console.WriteLine("QLCalibration_GetTargets() returned {0}.", error.ToString());
+                    Console.WriteLine("QLCalibration_GetTargets() returned {0}.", error);
                     return false;
                 }
-                if (numTargets != this._numberOfTargets)
+                if (numTargets != _numberOfTargets)
                 {
-                    Console.WriteLine("QLCalibration_GetTargets() returned an unexpected number of targets.  Expected {0}; got {1}.", this._numberOfTargets, numTargets);
+                    Console.WriteLine("QLCalibration_GetTargets() returned an unexpected number of targets.  Expected {0}; got {1}.", _numberOfTargets, numTargets);
                     return false;
                 }
 
@@ -497,7 +497,7 @@ namespace QuickLink2DotNetHelper
                 //this.Show();
 
                 // For each target, draw it and then perform calibration.
-                for (int i = 0; i < numTargets; i++)
+                for (var i = 0; i < numTargets; i++)
                 {
                     if (!CalibrateTarget(i))
                     {
@@ -510,7 +510,7 @@ namespace QuickLink2DotNetHelper
                     return false;
                 }
 
-                if (this._maximumScore > 0)
+                if (_maximumScore > 0)
                 {
                     if (!ImproveCalibration())
                     {
@@ -520,7 +520,7 @@ namespace QuickLink2DotNetHelper
 
                 //this.TopMost = false;
                 //this.WindowState = System.Windows.Forms.FormWindowState.Minimized;
-                this.Hide();
+                Hide();
 
                 return true;
             }

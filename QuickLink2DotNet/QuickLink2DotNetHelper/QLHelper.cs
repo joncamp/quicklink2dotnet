@@ -37,11 +37,7 @@
 #endregion Header Comments
 
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
 using QuickLink2DotNet;
 
 namespace QuickLink2DotNetHelper
@@ -59,16 +55,16 @@ namespace QuickLink2DotNetHelper
         /// </summary>
         public static string ConfigDirectory
         {
-            get { return QLHelper._configDirectory; }
+            get { return _configDirectory; }
         }
-        private static string _configDirectory = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "QuickLink2DotNet");
+        private static string _configDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "QuickLink2DotNet");
 
         /// <summary>
         /// The path to the settings file for this eye tracker device.
         /// </summary>
         public string SettingsFilename
         {
-            get { return this._settingsFilename; }
+            get { return _settingsFilename; }
         }
         private string _settingsFilename;
         private static string _settingsFilenamePrefix = "SN_";
@@ -79,7 +75,7 @@ namespace QuickLink2DotNetHelper
         /// </summary>
         public string CalibrationFilename
         {
-            get { return this._calibrationFilename; }
+            get { return _calibrationFilename; }
         }
         private string _calibrationFilename;
         private static string _calibrationFilenamePrefix = "SN_";
@@ -92,7 +88,7 @@ namespace QuickLink2DotNetHelper
         /// </summary>
         public QLDeviceInfo DeviceInfo
         {
-            get { return this._deviceInfo; }
+            get { return _deviceInfo; }
         }
         private QLDeviceInfo _deviceInfo;
 
@@ -102,16 +98,16 @@ namespace QuickLink2DotNetHelper
         /// </summary>
         public int DeviceId
         {
-            get { return this._deviceId; }
+            get { return _deviceId; }
         }
         private int _deviceId;
 
         private QLHelper(int deviceId, QLDeviceInfo info)
         {
-            this._deviceId = deviceId;
-            this._deviceInfo = info;
-            this._settingsFilename = System.IO.Path.Combine(QLHelper.ConfigDirectory, string.Format("{0}{1}{2}", QLHelper._settingsFilenamePrefix, info.serialNumber, QLHelper._settingsFilenamePostfix));
-            this._calibrationFilename = System.IO.Path.Combine(QLHelper.ConfigDirectory, string.Format("{0}{1}{2}", QLHelper._calibrationFilenamePrefix, info.serialNumber, QLHelper._calibrationFilenamePostfix));
+            _deviceId = deviceId;
+            _deviceInfo = info;
+            _settingsFilename = Path.Combine(ConfigDirectory, string.Format("{0}{1}{2}", _settingsFilenamePrefix, info.serialNumber, _settingsFilenamePostfix));
+            _calibrationFilename = Path.Combine(ConfigDirectory, string.Format("{0}{1}{2}", _calibrationFilenamePrefix, info.serialNumber, _calibrationFilenamePostfix));
         }
     }
 }

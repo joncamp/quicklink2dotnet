@@ -37,12 +37,8 @@
 #endregion Header Comments
 
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Drawing.Imaging;
 using System.Threading;
 using System.Windows.Forms;
 using QuickLink2DotNet;
@@ -56,7 +52,7 @@ namespace QuickLink2DotNetHelper
         /// tracker device in quarter-size, half-size, or full size.  Press
         /// the space bar with the form in focus to cycle through sizes.
         /// </summary>
-        public partial class VideoForm : Form
+        public class VideoForm : Form
         {
             private QLHelper _helper;
 
@@ -71,7 +67,7 @@ namespace QuickLink2DotNetHelper
 
             private Bitmap _latestImage;
 
-            private bool _disposed = false;
+            private bool _disposed;
 
             private PictureBox _videoPictureBox;
 
@@ -93,41 +89,41 @@ namespace QuickLink2DotNetHelper
             /// </param>
             public VideoForm(QLHelper helper, int sizeDivisor)
             {
-                this._helper = helper;
+                _helper = helper;
 
                 switch (sizeDivisor)
                 {
                     case 1:
-                        this._videoScale = 1f;
+                        _videoScale = 1f;
                         break;
 
                     case 2:
-                        this._videoScale = 0.5f;
+                        _videoScale = 0.5f;
                         break;
 
                     case 4:
-                        this._videoScale = 0.25f;
+                        _videoScale = 0.25f;
                         break;
                 }
 
-                this._frameData = new QLFrameData();
-                this._latestImage = null;
-                this._nextSize = false;
+                _frameData = new QLFrameData();
+                _latestImage = null;
+                _nextSize = false;
 
-                this.ClientSize = new Size((int)(helper._deviceInfo.sensorWidth * this._videoScale), (int)(helper._deviceInfo.sensorHeight * this._videoScale));
-                this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-                this.MaximizeBox = false;
+                ClientSize = new Size((int)(helper._deviceInfo.sensorWidth * _videoScale), (int)(helper._deviceInfo.sensorHeight * _videoScale));
+                FormBorderStyle = FormBorderStyle.FixedSingle;
+                MaximizeBox = false;
 
-                this._videoPictureBox = new System.Windows.Forms.PictureBox();
-                this._videoPictureBox.Dock = System.Windows.Forms.DockStyle.Fill;
-                this._videoPictureBox.Paint += new PaintEventHandler(VideoForm_VideoPictureBox_Paint);
-                this.Controls.Add(this._videoPictureBox);
+                _videoPictureBox = new PictureBox();
+                _videoPictureBox.Dock = DockStyle.Fill;
+                _videoPictureBox.Paint += VideoForm_VideoPictureBox_Paint;
+                Controls.Add(_videoPictureBox);
 
-                this.FormClosing += new FormClosingEventHandler(VideoForm_FormClosing);
-                this.KeyUp += new KeyEventHandler(VideoForm_KeyUp);
-                this.Shown += new EventHandler(VideoForm_Shown);
+                FormClosing += VideoForm_FormClosing;
+                KeyUp += VideoForm_KeyUp;
+                Shown += VideoForm_Shown;
 
-                this._frameReader_Thread = new Thread(FrameReader);
+                _frameReader_Thread = new Thread(FrameReader);
             }
 
             /// <summary>
@@ -155,10 +151,10 @@ namespace QuickLink2DotNetHelper
             /// </param>
             protected override void Dispose(bool disposing)
             {
-                if (disposing && (!this._disposed))
+                if (disposing && (!_disposed))
                 {
-                    this._videoPictureBox.Dispose();
-                    this._disposed = true;
+                    _videoPictureBox.Dispose();
+                    _disposed = true;
                 }
                 base.Dispose(disposing);
             }
@@ -167,62 +163,62 @@ namespace QuickLink2DotNetHelper
             {
                 if (e.KeyCode == Keys.Space)
                 {
-                    this._nextSize = true;
+                    _nextSize = true;
                 }
             }
 
             private void VideoForm_Shown(object sender, EventArgs e)
             {
-                this._frameReader_Thread.Start();
-                while (!this._frameReader_Thread.IsAlive) ;
+                _frameReader_Thread.Start();
+                while (!_frameReader_Thread.IsAlive) ;
             }
 
             private void VideoForm_FormClosing(object sender, FormClosingEventArgs e)
             {
-                this._frameReader_Thread.Abort();
-                this._frameReader_Thread.Join();
+                _frameReader_Thread.Abort();
+                _frameReader_Thread.Join();
             }
 
             private void VideoForm_VideoPictureBox_Paint(object sender, PaintEventArgs e)
             {
-                if (this._nextSize)
+                if (_nextSize)
                 {
-                    if (this._videoScale == 1f)
+                    if (_videoScale == 1f)
                     {
-                        this._videoScale = 0.25f;
+                        _videoScale = 0.25f;
                     }
-                    else if (this._videoScale == 0.25f)
+                    else if (_videoScale == 0.25f)
                     {
-                        this._videoScale = 0.5f;
+                        _videoScale = 0.5f;
                     }
-                    else if (this._videoScale == 0.5f)
+                    else if (_videoScale == 0.5f)
                     {
-                        this._videoScale = 1f;
+                        _videoScale = 1f;
                     }
 
-                    this.ClientSize = new Size((int)(this._helper.DeviceInfo.sensorWidth * this._videoScale), (int)(this._helper.DeviceInfo.sensorHeight * this._videoScale));
-                    this._nextSize = false;
-                    this._videoPictureBox.Invalidate();
+                    ClientSize = new Size((int)(_helper.DeviceInfo.sensorWidth * _videoScale), (int)(_helper.DeviceInfo.sensorHeight * _videoScale));
+                    _nextSize = false;
+                    _videoPictureBox.Invalidate();
                 }
                 else
                 {
-                    if (this._latestImage == null)
+                    if (_latestImage == null)
                     {
                         return;
                     }
 
-                    Graphics g = e.Graphics;
+                    var g = e.Graphics;
 
-                    g.DrawImage(this._latestImage, 0, 0, this._videoPictureBox.Width, this._videoPictureBox.Height);
+                    g.DrawImage(_latestImage, 0, 0, _videoPictureBox.Width, _videoPictureBox.Height);
 
                     g.Flush(FlushIntention.Sync);
 
-                    this._latestImage.Dispose();
-                    this._latestImage = null;
+                    _latestImage.Dispose();
+                    _latestImage = null;
 
-                    lock (this._frameData_Lock)
+                    lock (_frameData_Lock)
                     {
-                        Monitor.Pulse(this._frameData_Lock);
+                        Monitor.Pulse(_frameData_Lock);
                     }
                 }
             }
@@ -231,20 +227,20 @@ namespace QuickLink2DotNetHelper
             {
                 while (true)
                 {
-                    QLError error = QuickLink2API.QLDevice_GetFrame(this._helper.DeviceId, 2000, ref this._frameData);
+                    var error = QuickLink2API.QLDevice_GetFrame(_helper.DeviceId, 2000, ref _frameData);
                     if (error != QLError.QL_ERROR_OK)
                     {
-                        Console.WriteLine("QLDevice_GetFrame() returned {0}.", error.ToString());
+                        Console.WriteLine("QLDevice_GetFrame() returned {0}.", error);
                         continue;
                     }
 
-                    this._latestImage = QLHelper.BitmapFromQLImageData(ref this._frameData.ImageData);
+                    _latestImage = BitmapFromQLImageData(ref _frameData.ImageData);
 
-                    this._videoPictureBox.Invalidate();
+                    _videoPictureBox.Invalidate();
 
-                    lock (this._frameData_Lock)
+                    lock (_frameData_Lock)
                     {
-                        Monitor.Wait(this._frameData_Lock);
+                        Monitor.Wait(_frameData_Lock);
                     }
                 }
             }

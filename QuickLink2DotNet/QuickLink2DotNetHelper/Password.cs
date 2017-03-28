@@ -37,9 +37,7 @@
 #endregion Header Comments
 
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
 using QuickLink2DotNet;
 
@@ -58,34 +56,34 @@ namespace QuickLink2DotNetHelper
             }
 
             // Read the settings out of a file into a new setting container.
-            int settingsId = -1;
-            QLError error = QuickLink2API.QLSettings_Load(settingsFilename, ref settingsId);
+            var settingsId = -1;
+            var error = QuickLink2API.QLSettings_Load(settingsFilename, ref settingsId);
             if (error != QLError.QL_ERROR_OK)
             {
-                Console.WriteLine("QLSettings_Load() returned {0}.", error.ToString());
+                Console.WriteLine("QLSettings_Load() returned {0}.", error);
                 return null;
             }
 
             // Check for the device password already in settings and fetch its size.
             int passwordSettingSize;
-            error = QuickLink2API.QLSettings_GetValueStringSize(settingsId, QLHelper._passwordSettingName, out passwordSettingSize);
+            error = QuickLink2API.QLSettings_GetValueStringSize(settingsId, _passwordSettingName, out passwordSettingSize);
             if (error == QLError.QL_ERROR_NOT_FOUND)
             {
                 Console.WriteLine("The device password does not exist in the specified settings file.");
                 return null;
             }
-            else if (error != QLError.QL_ERROR_OK)
+            if (error != QLError.QL_ERROR_OK)
             {
-                Console.WriteLine("QLSettings_GetValueStringSize() returned {0}.", error.ToString());
+                Console.WriteLine("QLSettings_GetValueStringSize() returned {0}.", error);
                 return null;
             }
 
             // Load the password from the settings file.
-            System.Text.StringBuilder password = new System.Text.StringBuilder(passwordSettingSize);
-            error = QuickLink2API.QLSettings_GetValueString(settingsId, QLHelper._passwordSettingName, passwordSettingSize, password);
+            var password = new StringBuilder(passwordSettingSize);
+            error = QuickLink2API.QLSettings_GetValueString(settingsId, _passwordSettingName, passwordSettingSize, password);
             if (error != QLError.QL_ERROR_OK)
             {
-                Console.WriteLine("QLSettings_GetValueString() returned {0}.", error.ToString());
+                Console.WriteLine("QLSettings_GetValueString() returned {0}.", error);
                 return null;
             }
 
@@ -96,37 +94,37 @@ namespace QuickLink2DotNetHelper
         private static bool SavePassword(string settingsFilename, string password)
         {
             // Read the settings out the file (if it exists) into a new setting container.
-            int settingsId = 0;
-            QLError error = QuickLink2API.QLSettings_Load(settingsFilename, ref settingsId);
+            var settingsId = 0;
+            var error = QuickLink2API.QLSettings_Load(settingsFilename, ref settingsId);
             if (error == QLError.QL_ERROR_INVALID_PATH || error == QLError.QL_ERROR_INTERNAL_ERROR)
             {
                 // The file does not exist to load from; create a new settings container.
                 error = QuickLink2API.QLSettings_Create(-1, out settingsId);
                 if (error != QLError.QL_ERROR_OK)
                 {
-                    Console.WriteLine("QLSettings_Create() returned {0}.", error.ToString());
+                    Console.WriteLine("QLSettings_Create() returned {0}.", error);
                     return false;
                 }
             }
             else if (error != QLError.QL_ERROR_OK)
             {
-                Console.WriteLine("QLSettings_Load() returned {0}.", error.ToString());
+                Console.WriteLine("QLSettings_Load() returned {0}.", error);
                 return false;
             }
 
             // Remove the password if it already exists in the container.
-            error = QuickLink2API.QLSettings_RemoveSetting(settingsId, QLHelper._passwordSettingName);
+            error = QuickLink2API.QLSettings_RemoveSetting(settingsId, _passwordSettingName);
             if (error != QLError.QL_ERROR_OK && error != QLError.QL_ERROR_NOT_FOUND)
             {
-                Console.WriteLine("QLSettings_RemoveSetting() returned {0}.", error.ToString());
+                Console.WriteLine("QLSettings_RemoveSetting() returned {0}.", error);
                 return false;
             }
 
             // Add the password to the container.
-            error = QuickLink2API.QLSettings_SetValueString(settingsId, QLHelper._passwordSettingName, password);
+            error = QuickLink2API.QLSettings_SetValueString(settingsId, _passwordSettingName, password);
             if (error != QLError.QL_ERROR_OK)
             {
-                Console.WriteLine("QLSettings_SetValueString() returned {0}.", error.ToString());
+                Console.WriteLine("QLSettings_SetValueString() returned {0}.", error);
                 return false;
             }
 
@@ -134,7 +132,7 @@ namespace QuickLink2DotNetHelper
             error = QuickLink2API.QLSettings_Save(settingsFilename, settingsId);
             if (error != QLError.QL_ERROR_OK)
             {
-                Console.WriteLine("QLSettings_Save() returned {0}.", error.ToString());
+                Console.WriteLine("QLSettings_Save() returned {0}.", error);
                 return false;
             }
 
@@ -160,47 +158,46 @@ namespace QuickLink2DotNetHelper
         {
             QLError error;
 
-            string password = LoadPassword(this.SettingsFilename);
+            var password = LoadPassword(SettingsFilename);
             if (password != null)
             {
-                error = QuickLink2API.QLDevice_SetPassword(this.DeviceId, password);
+                error = QuickLink2API.QLDevice_SetPassword(DeviceId, password);
                 if (error == QLError.QL_ERROR_OK)
                 {
                     return true;
                 }
-                else if (error != QLError.QL_ERROR_INVALID_PASSWORD)
+                if (error != QLError.QL_ERROR_INVALID_PASSWORD)
                 {
-                    Console.WriteLine("QLDevice_SetPassword() returned {0}.", error.ToString());
+                    Console.WriteLine("QLDevice_SetPassword() returned {0}.", error);
                     return false;
                 }
             }
 
-            ConsoleKey keypress = ConsoleKey.Y;
+            var keypress = ConsoleKey.Y;
 
             while (keypress == ConsoleKey.Y)
             {
                 Console.Write("Enter password for device: ");
                 password = Console.ReadLine();
 
-                error = QuickLink2API.QLDevice_SetPassword(this.DeviceId, password);
+                error = QuickLink2API.QLDevice_SetPassword(DeviceId, password);
                 if (error == QLError.QL_ERROR_INVALID_PASSWORD)
                 {
                     // Flush the input buffer.
                     while (Console.KeyAvailable) { Console.ReadKey(true); }
 
                     Console.WriteLine("Password is invalid. Try again? (y/n): ");
-                    ConsoleKeyInfo keyInfo = Console.ReadKey();
+                    var keyInfo = Console.ReadKey();
                     keypress = keyInfo.Key;
-                    continue;
                 }
                 else if (error != QLError.QL_ERROR_OK)
                 {
-                    Console.WriteLine("QLDevice_SetPassword() returned {0}.", error.ToString());
+                    Console.WriteLine("QLDevice_SetPassword() returned {0}.", error);
                     return false;
                 }
                 else
                 {
-                    if (SavePassword(this.SettingsFilename, password))
+                    if (SavePassword(SettingsFilename, password))
                     {
                         Console.WriteLine("New password applied to device and saved to settings file.");
                     }

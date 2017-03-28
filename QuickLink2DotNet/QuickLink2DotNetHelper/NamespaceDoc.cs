@@ -36,10 +36,7 @@
 
 #endregion Header Comments
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Runtime.CompilerServices;
 
 namespace QuickLink2DotNetHelper
 {
@@ -83,6 +80,6 @@ namespace QuickLink2DotNetHelper
     /// IN THE SOFTWARE.</em>
     /// </para>
     /// </summary>
-    [System.Runtime.CompilerServices.CompilerGenerated]
+    [CompilerGenerated]
     class NamespaceDoc { }
 }

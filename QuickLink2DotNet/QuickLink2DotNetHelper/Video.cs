@@ -37,12 +37,8 @@
 #endregion Header Comments
 
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
 using QuickLink2DotNet;
 
 namespace QuickLink2DotNetHelper
@@ -86,8 +82,8 @@ namespace QuickLink2DotNetHelper
             catch (ArgumentException) { return null; }
 
             // Set the palette of the image to 256 incremental shades of grey.
-            ColorPalette greyScalePalette = bitmap.Palette;
-            for (int i = 0; i < 256; i++)
+            var greyScalePalette = bitmap.Palette;
+            for (var i = 0; i < 256; i++)
             {
                 greyScalePalette.Entries[i] = Color.FromArgb(255, i, i, i);
             }
